@@ -1,0 +1,5 @@
+#!/bin/bash
+
+user=$(whoami)
+sudo chown -R $user:$user .
+mvn clean compile
