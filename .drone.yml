@@ -1,0 +1,34 @@
+image: shippedrepos-docker-shipped-java-build.bintray.io/shipped-java-build:3c7761570d38
+git:
+  path: github.com/larsers/spring
+script:
+  - echo "build commands"
+  - .shipped/build
+  - .shipped/test
+clone:
+  path: github.com/larsers/spring
+build:
+  image: shippedrepos-docker-shipped-java-build.bintray.io/shipped-java-build:3c7761570d38
+  commands:
+    - echo "build commands"
+    - .shipped/build
+    - .shipped/test
+publish:
+  docker:
+    file: ./Dockerfile
+    username: $$docker_user
+    password: $$docker_key
+    registry: $$docker_registry
+    repo: $$docker_repo
+    email: $$docker_user_email
+    tag: $$COMMIT
+    
+
+
+notify:
+  webhook:
+    image: shippedrepos-docker-drone.bintray.io/drone-webhook
+    urls:
+      - "https://api.ciscoshipped.io/webhooks/drone"
+    on_success: true
+    on_failure: true
